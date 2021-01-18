@@ -1,0 +1,74 @@
+{
+  "name": "blossom",
+  "displayName": "blossom",
+  "description": "VSCode support for the blossom pta eco-system",
+  "version": "0.0.1",
+  "publisher": "blossom-hub",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blossom-hub/vscode-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/blossom-hub/vscode-extension/issues"
+  },
+  "homepage": "https://github.com/blossom-hub/vscode-extension#readme",
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:blossom"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "configuration": {
+      "title": "Blossom",
+      "properties": {
+        "blossom.location": {
+          "type": "string",
+          "default": "G:\\Code\\github\\blossom\\blossom-cli\\bin\\Debug\\netcoreapp3.1\\blossom-cli.exe",
+          "description": "Location to find the blossom executable"
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "blossom",
+        "aliases": [
+          "Blossom",
+          "blossom"
+        ],
+        "extensions": [
+          ".fledge",
+          ".blossom"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "blossom",
+        "scopeName": "text.blossom",
+        "path": "./syntaxes/blossom.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.52.0",
+    "@types/node": "^14.14.21",
+    "vscode-test": "^1.4.1",
+    "typescript": "^4.1.3"
+  }
+}

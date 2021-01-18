@@ -1,0 +1,46 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Blossom",
+    "patterns": [
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#dates"
+        },
+        {
+            "include": "#comments"
+        }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.blossom",
+                    "match": "\\b(assert)\\b"
+                },
+                {
+                    "name": "entity.name.class.blossom",
+                    "match": "\\b(commodity|prices|account)\\b"
+                }
+            ]
+        },
+        "dates": {
+            "patterns": [
+                {
+                    "name": "variable.other.date.blossom",
+                    "match": "\\b(\\d{4}-\\d{2}-\\d{2})\\b"
+                }
+            ]
+        },
+        "comments":{
+            "patterns": [
+                {
+                    "name": "comment.line.blossom",
+                    "match": ";.*"
+                }
+            ]
+        }
+    },
+    "scopeName": "text.blossom"
+}
