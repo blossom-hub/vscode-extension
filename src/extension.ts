@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { workspace, ExtensionContext } from 'vscode';
+
+import { workspace, ExtensionContext, notebooks } from 'vscode';
 
 import {
     LanguageClient,
@@ -10,12 +11,18 @@ import {
     TransportKind
 } from 'vscode-languageclient/node';
 
+import { NotebookKernel, NotebookSerializer } from './notebook';
+
+
 let client: LanguageClient;
 
-export function activate(context: ExtensionContext) {
+export function activate(context: ExtensionContext) : void {
+    let blossomLocation = workspace.getConfiguration('blossom')['location'];
+    let blossomPort = '4567';
+
     let serverOptions: Executable = {
-        command: workspace.getConfiguration('blossom')['location'],
-        args: []
+        command: blossomLocation,
+        args: ['http', '--port', blossomPort]
     };
 
     let clientOptions: LanguageClientOptions = {
@@ -33,10 +40,17 @@ export function activate(context: ExtensionContext) {
 
     client.start();
 
-    const extension = new Extension(context);
+    context.subscriptions.push(
+        new NotebookKernel(blossomPort),
+        workspace.registerNotebookSerializer('blossom-book', new NotebookSerializer())
+    );
+
+    
+
+    // const extension = new Extension(context);
 }
 
-export function deactivate() {
+export function deactivate() : Promise<void> {
     if (!client) {
         return undefined;
     }

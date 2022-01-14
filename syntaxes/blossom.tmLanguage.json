@@ -1,46 +1,177 @@
 {
     "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
     "name": "Blossom",
+    "scopeName": "text.blossom",
+    "foldingStartMarker": "^#region",
+    "foldingStopMarker": "^#endregion",
     "patterns": [
         {
-            "include": "#keywords"
+            "include": "#directives"
         },
         {
-            "include": "#dates"
+            "include": "#declarations"
         },
         {
             "include": "#comments"
         }
     ],
     "repository": {
-        "keywords": {
+        "directives": {
             "patterns": [
                 {
-                    "name": "keyword.control.blossom",
-                    "match": "\\b(assert)\\b"
+                    "name": "keyword.control.directive.blossom",
+                    "match": "^(.indent|import)\\b"
+                }
+            ]
+        },
+        "declarations": {
+            "patterns": [
+                {
+                    "name": "meta.journal",
+                    "begin": "(^journal)\\s(.+$)",
+                    "end": "^$",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.journal"
+                        },
+                        "2":{
+                            "name": "string"
+                        }
+                    },
+                    "patterns": [
+                        {
+                            "match": "^\\s+([a-z]\\w+)\\s(\\w*)",
+                            "captures": {
+                                "1": {
+                                    "name": "variable.journal"
+                                }
+                            }
+                        }
+                    ]
                 },
                 {
-                    "name": "entity.name.class.blossom",
-                    "match": "\\b(commodity|prices|account)\\b"
+                    "name": "meta.commodity",
+                    "begin": "(^commodity)\\s(.+$)",
+                    "end": "^$",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.commodity"
+                        },
+                        "2":{
+                            "name": "string"
+                        }
+                    },
+                    "patterns": [
+                        {
+                            "match": "^\\s+([a-z]\\w+)\\s(\\w*)",
+                            "captures": {
+                                "1": {
+                                    "name": "variable.commodity"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "meta.account",
+                    "begin": "(^account)\\s(.*$)",
+                    "end": "^$",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "storage.account"
+                        },
+                        "2": {
+                            "name": "string",
+                            "patterns": [
+                                {
+                                    "include": "#account"
+                                }
+                            ]
+                        }
+                    },
+                    "patterns": [
+                        {
+                            "match": "^\\s+([a-z]\\w+)\\s(\\w*)",
+                            "captures": {
+                                "1": {
+                                    "name": "variable.account"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "meta.prices",
+                    "begin":"^(prices)\\s+(.+)\\s(.+)",
+                    "end": "^$",
+                    "beginCaptures": {
+                        "1":{"name": "storage.prices"},
+                        "2":{"name": "string"},
+                        "3":{"name": "string"}
+                    },
+                    "patterns":[
+                        {
+                            "match": "(.+)\\s+(.+)",
+                            "captures":{
+                                "1":{
+                                    "patterns": [
+                                        {
+                                            "include": "#date"
+                                        }
+                                    ]
+                                },
+                                "2":{
+                                    "patterns": [
+                                        {
+                                            "include": "#number"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         },
-        "dates": {
+        "elements": {
             "patterns": [
                 {
-                    "name": "variable.other.date.blossom",
-                    "match": "\\b(\\d{4}-\\d{2}-\\d{2})\\b"
+                    "include": "#date",
+                    "name": "meta.entry"
                 }
             ]
         },
-        "comments":{
+        "number":{
             "patterns": [
                 {
-                    "name": "comment.line.blossom",
-                    "match": ";.*"
+                    "name":"constant.numeric",
+                    "match": "(-)?[0-9]+(\\.[0-9]+)?"
+                }
+            ]
+        },
+        "date": {
+            "patterns": [
+                {
+                    "name": "constant.date",
+                    "match": "(\\d{4}-\\d{2}-\\d{2})"
+                }
+            ]
+        },
+        "account": {
+            "patterns": [
+                {
+                    "name": "constant.account",
+                    "match": "([A-Z]\\w*:)+\\w*[A-Z]\\w*"
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.character",
+                    "match": "\\s*(;|\\*).*"
                 }
             ]
         }
-    },
-    "scopeName": "text.blossom"
+    }
 }
